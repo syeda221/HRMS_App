@@ -28,4 +28,16 @@ class ApiEndpoints {
 
   // Admin Endpoints
   static String get adminDashboard => '$baseUrl/admin/dashboard';
+  static String get adminStaff => '$baseUrl/admin/staff';
+  static String adminStaffDetail(int id) => '$baseUrl/admin/staff/$id';
+  static String get adminShifts => '$baseUrl/admin/shifts';
+  static String adminShiftDetail(int id) => '$baseUrl/admin/shifts/$id';
+  static String get adminAttendances => '$baseUrl/admin/attendances';
+  static String get adminAttendanceOverride => '$baseUrl/admin/attendances/override';
+  static String get adminPayrolls => '$baseUrl/admin/payrolls';
+  static String get adminPayrollGenerate => '$baseUrl/admin/payrolls/generate';
+  static String adminPayrollStatus(int id) => '$baseUrl/admin/payrolls/$id/status';
+  static String get adminOfficeQr => '$baseUrl/admin/office-qr';
+  static String get adminOfficeQrRegenerate => '$baseUrl/admin/office-qr/regenerate';
+  static String get adminOfficeQrGeofence => '$baseUrl/admin/office-qr/geofence';
 }

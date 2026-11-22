@@ -5,6 +5,8 @@ import '../../auth/providers/auth_provider.dart';
 import '../../auth/views/login_screen.dart';
 import '../models/admin_dashboard_model.dart';
 import '../providers/admin_provider.dart';
+import 'office_qr_management_screen.dart';
+import 'employee_qr_badge_screen.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   final Function(int)? onNavigateTab;
@@ -811,67 +813,78 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                               const SizedBox(height: 12),
                               if (data?.recentCheckins != null && data!.recentCheckins.isNotEmpty)
                                 for (var item in data.recentCheckins) ...[
-                                  Container(
-                                    margin: const EdgeInsets.only(bottom: 8),
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.surfaceMuted,
-                                      borderRadius: BorderRadius.circular(14),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 18,
-                                          backgroundImage: item.avatarUrl != null ? NetworkImage(item.avatarUrl!) : null,
-                                          backgroundColor: AppColors.primary,
-                                          child: item.avatarUrl == null
-                                              ? Text(item.name.isNotEmpty ? item.name[0] : 'U', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13))
-                                              : null,
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => EmployeeQrBadgeScreen(staffId: item.id),
                                         ),
-                                        const SizedBox(width: 10),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(item.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.textPrimary)),
-                                                  const SizedBox(width: 6),
-                                                  Container(
-                                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-                                                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
-                                                    child: Text(item.employeeCode, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(height: 2),
-                                              Text(item.note, style: const TextStyle(fontSize: 11, color: AppColors.textTertiary), maxLines: 1, overflow: TextOverflow.ellipsis),
-                                            ],
+                                      );
+                                    },
+                                    borderRadius: BorderRadius.circular(14),
+                                    child: Container(
+                                      margin: const EdgeInsets.only(bottom: 8),
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.surfaceMuted,
+                                        borderRadius: BorderRadius.circular(14),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 18,
+                                            backgroundImage: item.avatarUrl != null ? NetworkImage(item.avatarUrl!) : null,
+                                            backgroundColor: AppColors.primary,
+                                            child: item.avatarUrl == null
+                                                ? Text(item.name.isNotEmpty ? item.name[0] : 'U', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13))
+                                                : null,
                                           ),
-                                        ),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                          children: [
-                                            Text(item.timeFormatted, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11, color: AppColors.textPrimary)),
-                                            const SizedBox(height: 2),
-                                            Container(
-                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                              decoration: BoxDecoration(
-                                                color: item.status == 'late' ? AppColors.statusLateBg : AppColors.statusPresentBg,
-                                                borderRadius: BorderRadius.circular(8),
-                                              ),
-                                              child: Text(
-                                                item.statusLabel,
-                                                style: TextStyle(
-                                                  fontSize: 9,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: item.status == 'late' ? AppColors.statusLate : AppColors.statusPresent,
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(item.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.textPrimary)),
+                                                    const SizedBox(width: 6),
+                                                    Container(
+                                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                                                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(6)),
+                                                      child: Text(item.employeeCode, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 2),
+                                                Text(item.note, style: const TextStyle(fontSize: 11, color: AppColors.textTertiary), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                              ],
+                                            ),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            children: [
+                                              Text(item.timeFormatted, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11, color: AppColors.textPrimary)),
+                                              const SizedBox(height: 2),
+                                              Container(
+                                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                                decoration: BoxDecoration(
+                                                  color: item.status == 'late' ? AppColors.statusLateBg : AppColors.statusPresentBg,
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                                child: Text(
+                                                  item.statusLabel,
+                                                  style: TextStyle(
+                                                    fontSize: 9,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: item.status == 'late' ? AppColors.statusLate : AppColors.statusPresent,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ]
@@ -888,45 +901,57 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         const SizedBox(height: 18),
 
                         // 8. Spatial Security / Geofence Card (Matching Stitch)
-                        Container(
-                          padding: const EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                            color: AppColors.surface,
-                            borderRadius: BorderRadius.circular(18),
-                            border: Border.all(color: AppColors.border),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(12)),
-                                child: const Icon(Icons.location_on_rounded, color: AppColors.accentLime, size: 20),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const OfficeQrManagementScreen(),
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Text('SPATIAL SECURITY', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF4D6700), letterSpacing: 0.8)),
-                                        const SizedBox(width: 6),
-                                        Container(width: 5, height: 5, decoration: const BoxDecoration(color: AppColors.accentLime, shape: BoxShape.circle)),
-                                        const SizedBox(width: 4),
-                                        const Text('Active', style: TextStyle(fontSize: 10, color: AppColors.textSecondary, fontWeight: FontWeight.w500)),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      'Geofencing locked to ${data?.geofenceRadius ?? 150}m radius • ${data?.locationName ?? 'HQ Main Campus'}',
-                                      style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
+                            );
+                          },
+                          borderRadius: BorderRadius.circular(18),
+                          child: Container(
+                            padding: const EdgeInsets.all(14),
+                            decoration: BoxDecoration(
+                              color: AppColors.surface,
+                              borderRadius: BorderRadius.circular(18),
+                              border: Border.all(color: AppColors.border),
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(12)),
+                                  child: const Icon(Icons.location_on_rounded, color: AppColors.accentLime, size: 20),
                                 ),
-                              ),
-                            ],
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Text('SPATIAL SECURITY', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF4D6700), letterSpacing: 0.8)),
+                                          const SizedBox(width: 6),
+                                          Container(width: 5, height: 5, decoration: const BoxDecoration(color: AppColors.accentLime, shape: BoxShape.circle)),
+                                          const SizedBox(width: 4),
+                                          const Text('Active', style: TextStyle(fontSize: 10, color: AppColors.textSecondary, fontWeight: FontWeight.w500)),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        'Geofencing locked to ${data?.geofenceRadius ?? 150}m radius • ${data?.locationName ?? 'HQ Main Campus'}',
+                                        style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary, size: 20),
+                              ],
+                            ),
                           ),
                         ),
                         const SizedBox(height: 110), // Bottom padding for floating island nav

@@ -27,6 +27,8 @@ class User extends Authenticatable
         'joining_date',
         'avatar_url',
         'status',
+        'basic_salary',
+        'emergency_contact',
         'role',
         'shift_id',
     ];
@@ -73,5 +75,10 @@ class User extends Authenticatable
     public function attendances()
     {
         return $this->hasMany(Attendance::class);
+    }
+
+    public function payrolls()
+    {
+        return $this->hasMany(Payroll::class);
     }
 }
