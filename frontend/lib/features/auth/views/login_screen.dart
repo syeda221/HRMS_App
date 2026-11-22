@@ -5,6 +5,7 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/utils/storage_service.dart';
 import '../../../shared/widgets/custom_button.dart';
 import '../../../shared/widgets/custom_text_field.dart';
+import '../../admin/navigation/admin_navigation_shell.dart';
 import '../../navigation/main_navigation_shell.dart';
 import '../providers/auth_provider.dart';
 
@@ -17,8 +18,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _loginController = TextEditingController(text: 'staff@company.com');
-  final _passwordController = TextEditingController(text: 'password123');
+  final _loginController = TextEditingController(text: 'admin@company.com');
+  final _passwordController = TextEditingController(text: 'admin123');
 
   @override
   void dispose() {
@@ -37,9 +38,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (success && mounted) {
+      final user = authProvider.user;
+      final target = user?.isAdmin == true ? const AdminNavigationShell() : const MainNavigationShell();
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const MainNavigationShell()),
+        MaterialPageRoute(builder: (_) => target),
       );
     } else if (mounted && authProvider.errorMessage != null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -214,32 +217,59 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // Demo Quick Fill Helper Card
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: AppColors.accentLimeLight,
+                    color: AppColors.surface,
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.accentLime.withOpacity(0.4)),
+                    border: Border.all(color: AppColors.border),
                   ),
-                  child: Row(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.info_outline_rounded, size: 20, color: AppColors.primary),
-                      const SizedBox(width: 10),
-                      const Expanded(
-                        child: Text(
-                          'Demo Account:\nstaff@company.com / password123',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primary,
-                          ),
-                        ),
+                      Row(
+                        children: const [
+                          Icon(Icons.info_outline_rounded, size: 16, color: AppColors.primary),
+                          SizedBox(width: 6),
+                          Text('Quick Demo Switcher', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: AppColors.textPrimary)),
+                        ],
                       ),
-                      TextButton(
-                        onPressed: () {
-                          _loginController.text = 'staff@company.com';
-                          _passwordController.text = 'password123';
-                        },
-                        child: const Text('Auto-Fill', style: TextStyle(fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.primary,
+                                backgroundColor: AppColors.accentLimeLight,
+                                side: const BorderSide(color: AppColors.accentLime),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                padding: const EdgeInsets.symmetric(vertical: 8),
+                              ),
+                              onPressed: () {
+                                _loginController.text = 'admin@company.com';
+                                _passwordController.text = 'admin123';
+                              },
+                              child: const Text('Admin Demo', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.textSecondary,
+                                backgroundColor: AppColors.surfaceMuted,
+                                side: const BorderSide(color: AppColors.border),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                padding: const EdgeInsets.symmetric(vertical: 8),
+                              ),
+                              onPressed: () {
+                                _loginController.text = 'staff@company.com';
+                                _passwordController.text = 'password123';
+                              },
+                              child: const Text('Staff Demo', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600)),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

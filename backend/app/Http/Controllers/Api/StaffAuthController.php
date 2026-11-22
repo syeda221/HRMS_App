@@ -52,6 +52,7 @@ class StaffAuthController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'phone' => $user->phone,
+                    'role' => $user->role ?? 'staff',
                     'department' => $user->department?->name ?? 'General',
                     'designation' => $user->designation?->title ?? 'Staff Member',
                     'joining_date' => $user->joining_date?->format('Y-m-d'),

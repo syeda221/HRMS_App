@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'core/theme/app_theme.dart';
+import 'features/admin/navigation/admin_navigation_shell.dart';
+import 'features/admin/providers/admin_provider.dart';
 import 'features/attendance/providers/attendance_provider.dart';
 import 'features/auth/providers/auth_provider.dart';
 import 'features/auth/views/login_screen.dart';
@@ -25,6 +27,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider.value(value: authProvider),
         ChangeNotifierProvider(create: (_) => AttendanceProvider()),
+        ChangeNotifierProvider(create: (_) => AdminProvider()),
       ],
       child: const HrmsStaffApp(),
     ),
@@ -36,15 +39,19 @@ class HrmsStaffApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAuthenticated = context.select<AuthProvider, bool>(
-      (auth) => auth.isAuthenticated,
-    );
+    final auth = context.watch<AuthProvider>();
+
+    Widget getHomeScreen() {
+      if (!auth.isAuthenticated) return const LoginScreen();
+      if (auth.user?.isAdmin == true) return const AdminNavigationShell();
+      return const MainNavigationShell();
+    }
 
     return MaterialApp(
-      title: 'QR Attendance Staff Portal',
+      title: 'QR Attendance Portal',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: isAuthenticated ? const MainNavigationShell() : const LoginScreen(),
+      home: getHomeScreen(),
     );
   }
 }

@@ -25,4 +25,7 @@ class ApiEndpoints {
   // Staff Profile
   static String get profile => '$baseUrl/staff/profile';
   static String get changePassword => '$baseUrl/staff/change-password';
+
+  // Admin Endpoints
+  static String get adminDashboard => '$baseUrl/admin/dashboard';
 }

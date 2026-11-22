@@ -27,6 +27,8 @@ class User extends Authenticatable
         'joining_date',
         'avatar_url',
         'status',
+        'role',
+        'shift_id',
     ];
 
     /**
@@ -61,6 +63,11 @@ class User extends Authenticatable
     public function designation()
     {
         return $this->belongsTo(Designation::class);
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
     }
 
     public function attendances()

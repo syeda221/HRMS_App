@@ -8,6 +8,7 @@ class UserModel {
   final String designation;
   final String joiningDate;
   final String? avatarUrl;
+  final String role;
 
   UserModel({
     required this.id,
@@ -19,7 +20,10 @@ class UserModel {
     required this.designation,
     required this.joiningDate,
     this.avatarUrl,
+    this.role = 'staff',
   });
+
+  bool get isAdmin => role.toLowerCase() == 'admin';
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -32,6 +36,7 @@ class UserModel {
       designation: json['designation'] as String? ?? 'Staff Member',
       joiningDate: json['joining_date'] as String? ?? '',
       avatarUrl: json['avatar_url'] as String?,
+      role: json['role'] as String? ?? 'staff',
     );
   }
 
@@ -46,6 +51,7 @@ class UserModel {
       'designation': designation,
       'joining_date': joiningDate,
       'avatar_url': avatarUrl,
+      'role': role,
     };
   }
 }

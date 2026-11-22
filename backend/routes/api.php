@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\StaffAuthController;
 use App\Http\Controllers\Api\StaffAttendanceController;
 use App\Http\Controllers\Api\StaffProfileController;
+use App\Http\Controllers\Api\AdminDashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,4 +37,9 @@ Route::middleware('auth:sanctum')->prefix('staff')->group(function () {
     // Profile
     Route::get('/profile', [StaffProfileController::class, 'profile']);
     Route::put('/change-password', [StaffProfileController::class, 'changePassword']);
+});
+
+// Protected Admin Routes
+Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'dashboard']);
 });
